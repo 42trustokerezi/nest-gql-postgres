@@ -1,13 +1,16 @@
 import { Field, InputType } from "@nestjs/graphql";
 
 @InputType()
-export class EmployeeCreateDTO{
+export class EmployeeCreateDTO {
     @Field()
-    firstName: string;
+    firstName: string
     @Field()
-    lastName: string;
+    lastName: string
     @Field()
-    designation: string;
-    @Field({nullable: true})
-    city: string;
+    designation: string
+    @Field({ nullable: true })
+    city: string
+
+    @Field()
+    projectId: string
 }

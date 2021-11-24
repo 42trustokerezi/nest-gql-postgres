@@ -1,26 +1,39 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateProjectInput } from './dto/create-project.input';
 import { UpdateProjectInput } from './dto/update-project.input';
+import { Project } from './entities/project.entity';
 
 @Injectable()
 export class ProjectService {
-  create(createProjectInput: CreateProjectInput) {
-    return 'This action adds a new project';
+
+  constructor(@InjectRepository(Project) private projectRepository: Repository<Project>){
+    
   }
 
-  findAll() {
-    return `This action returns all project`;
+  create(project: CreateProjectInput): Promise<Project> {
+    let proj = this.projectRepository.create(project);
+    return this.projectRepository.save(proj);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} project`;
+  async findAll() : Promise<Project[]>{
+    return this.projectRepository.find({
+      relations: ["employees"]
+    });
   }
 
-  update(id: number, updateProjectInput: UpdateProjectInput) {
-    return `This action updates a #${id} project`;
+  async findOne(id: string): Promise<Project> {
+    return this.projectRepository.findOne(id, {relations: ["employees"]});
   }
 
-  remove(id: number) {
+  update(id: string, updateProjectInput: UpdateProjectInput) {
+    let project: Project = this.projectRepository.create(updateProjectInput)
+    project.id = id;
+    return this.projectRepository.save(project);
+  }
+
+  remove(id: string) {
     return `This action removes a #${id} project`;
   }
 }
