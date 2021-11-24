@@ -3,6 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { EmployeeModule } from './employee/employee.module';
+import { ProjectModule } from './project/project.module';
 
 
 @Module({
@@ -20,7 +21,8 @@ import { EmployeeModule } from './employee/employee.module';
       entities: ["dist/**/*.entity{.ts,.js}"],
       synchronize: true,
     }
-  )],
+  ),
+  ProjectModule],
   
   providers: [],
 })
